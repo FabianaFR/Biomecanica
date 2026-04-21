@@ -1,10 +1,9 @@
-%%calculo u,v,w de rodilla para centro articular
+%% calculo u,v,w de rodilla para centro articular
 %RODILLA DERECHA
 %calculo de v de rodilla
 RAvp= p3-p5; %[x y z]
 RBvp= RAvp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
 Rnormvp= sqrt(sum(RBvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-
 for i=1: size(RAvp,1)
     Rvrodilla(i,:)=RAvp(i,:)/Rnormvp(i);
 end
@@ -48,4 +47,25 @@ end
 Lwrodilla= cross(Lvrodilla,Lurodilla);
 
 %% centro articular rodilla izquierda
-plknee= p12 + A12*Lurodilla + A12*Lvrodilla - 0.5**A12*Lwrodilla;
+plknee= p12 + A12*Lurodilla + A12*Lvrodilla - 0.5*A12*Lwrodilla;
+
+
+%% GRAFICO DE VERSORES U V W
+% RODILLA DERECHA
+for i=1:10:length(p5)
+    quiver3(p5(i,1),p5(i,2),p5(i,3),Rurodilla(i,1)./10,Rurodilla(i,2)./10,Rurodilla(i,3)./10,'b');
+    hold on;
+    quiver3(p5(i,1),p5(i,2),p5(i,3),Rvrodilla(i,1)./10,Rvrodilla(i,2)./10,Rvrodilla(i,3)./10,'r');
+    hold on;
+    quiver3(p5(i,1),p5(i,2),p5(i,3),Rwrodilla(i,1)./10,Rwrodilla(i,2)./10,Rwrodilla(i,3)./10,'g');
+    hold on;
+end
+% RODILLA IZQUIERDA
+for i=1:10:length(p12)
+    quiver3(p12(i,1),p12(i,2),p12(i,3),Lurodilla(i,1)./10,Lurodilla(i,2)./10,Lurodilla(i,3)./10,'b');
+    hold on;
+    quiver3(p12(i,1),p12(i,2),p12(i,3),Lvrodilla(i,1)./10,Lvrodilla(i,2)./10,Lvrodilla(i,3)./10,'r');
+    hold on;
+    quiver3(p12(i,1),p12(i,2),p12(i,3),Lwrodilla(i,1)./10,Lwrodilla(i,2)./10,Lwrodilla(i,3)./10,'g');
+    hold on;
+end

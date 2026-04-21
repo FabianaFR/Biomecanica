@@ -57,9 +57,8 @@ ylabel('Eje y');
 zlabel ('Eje z');
 title('Trayectoria de marcadores y diagrama de u,v,w sobre el marcador sacro')
 grid on;
-
-
 %% GRAFICO DE VERSORES
+
 legend('Marcador del Sacro', 'Marcador del ASIS derecho','Marcador del ASIS izquierdo','u de pelvis','v de pelvis','w de pelvis');
 xlabel('Eje X');
 ylabel('Eje y');

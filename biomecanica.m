@@ -101,86 +101,6 @@ A19= Antropometria.children.ANCHO_PIE_DERECHO.info.values/100;
 A20= Antropometria.children.ANCHO_PIE_IZQUIERDO.info.values/100;
 
 
-
-%% Calculo de u,v,w PARA CENTRO ARTICULAR CADERA
-
-%calculo de v de pelvis
-Avp= p14-p7; %[x y z]
-Bvp= Avp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
-normvp= sqrt(sum(Bvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-for i=1: size(Avp,1)
-    vpelvis(i,:)=Avp(i,:)/normvp(i);
-end
-
-%calculo de w de pelvis
-Aw=(p7-p15);
-Bw=(p14-p15);
-Cw = cross(Aw,Bw);
-normwp= sqrt(sum(Cw.^2,2));
-for i=1: size(Aw,1)
-    wpelvis(i,:)=Cw(i,:)/normwp(i);
-end
-
-%calculo de u de pelvis
-upelvis= cross(vpelvis,wpelvis);
-
-%CENTROS ARTICULARES
-%Para el calculo de la posicion de la cadera derecha y de la izquierda...
-prhip= p15+ 0.598*A2*upelvis - 0.344*A2*vpelvis - 0,290*A2*wpelvis;
-plhip= p15+ 0.598*A2*upelvis + 0.344*A2*vpelvis - 0,290*A2*wpelvis;
-
-
-
-%% Calculo de u,v,w PARA CENTRO ARTICULAR RODILLA
-
-%RODILLA DERECHA
-%calculo de v de rodilla
-RAvp= p3-p5; %[x y z]
-RBvp= RAvp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
-Rnormvp= sqrt(sum(RBvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-for i=1: size(RAvp,1)
-    Rvrodilla(i,:)=RAvp(i,:)/Rnormvp(i);
-end
-
-%calculo de u de rodilla
-RAu=(p4-p5);
-RBu=(p3-p5);
-RCu = cross(RAu,RBu);
-Rnormup= sqrt(sum(RCu.^2,2));
-for i=1: size(RAu,1)
-    Rurodilla(i,:)=RCu(i,:)/Rnormup(i);
-end
-
-%calculo de w de rodilla
-Rwrodilla= cross(Rurodilla,Rvrodilla);
-%centro articular rodilla derecha
-rprodilla = p5 + A11*Rurodilla + A11*Rvrodilla + 0.5*A11*Rwrodilla;
-
-%RODILLA IZQUIERDA
-%calculo de v de rodilla
-LAvp= p10-p12; %[x y z]
-LBvp= LAvp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
-Lnormvp= sqrt(sum(LBvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-for i=1: size(LAvp,1)
-    Lvrodilla(i,:)=LAvp(i,:)/Lnormvp(i);
-end
-
-%calculo de u de rodilla (u va hacia adelante)
-LAu=(p10-p12);
-LBu=(p11-p12);
-LCu = cross(LAu,LBu);
-Lnormup= sqrt(sum(LCu.^2,2));
-for i=1: size(LAu,1)
-    Lurodilla(i,:)=LCu(i,:)/Lnormup(i);
-end
-
-%calculo de w de rodilla
-Lwrodilla= cross(Lvrodilla,Lurodilla);
-%centro articular rodilla izquierda
-lprodilla = p12 + A12*Lurodilla + A12*Lvrodilla - 0.5*A12*Lwrodilla;
-
-
-
 %% Graficos de marcadores
 figure
 %cadera
@@ -206,43 +126,195 @@ plot3(p10(:,1),p10(:,2),p10(:,3),'b','LineWidth',2)
 hold on;
 
 
-%% GRAFICO DE VERSORES
-% CADERA quiver permite graficar versores o vectores
-for i=1:10:length(p15)
-    quiver3(p15(i,1),p15(i,2),p15(i,3),upelvis(i,1)./10,upelvis(i,2)./10,upelvis(i,3)./10,'b');
-    hold on;
-    quiver3(p15(i,1),p15(i,2),p15(i,3),vpelvis(i,1)./10,vpelvis(i,2)./10,vpelvis(i,3)./10,'r');
-    hold on;
-    quiver3(p15(i,1),p15(i,2),p15(i,3),wpelvis(i,1)./10,wpelvis(i,2)./10,wpelvis(i,3)./10,'g');
-    hold on;
+%% Calculo de u,v,w PARA CENTRO ARTICULAR CADERA
+%calculo de v de pelvis
+Avp= p14-p7; %[x y z]
+Bvp= Avp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
+normvp= sqrt(sum(Bvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
+
+for i=1: size(Avp,1)
+    vpelvis(i,:)=Avp(i,:)/normvp(i);
 end
-% RODILLA DERECHA
-for i=1:10:length(p5)
-    quiver3(p5(i,1),p5(i,2),p5(i,3),Rurodilla(i,1)./10,Rurodilla(i,2)./10,Rurodilla(i,3)./10,'b');
-    hold on;
-    quiver3(p5(i,1),p5(i,2),p5(i,3),Rvrodilla(i,1)./10,Rvrodilla(i,2)./10,Rvrodilla(i,3)./10,'r');
-    hold on;
-    quiver3(p5(i,1),p5(i,2),p5(i,3),Rwrodilla(i,1)./10,Rwrodilla(i,2)./10,Rwrodilla(i,3)./10,'g');
-    hold on;
+
+%calculo de w de pelvis
+Aw=(p7-p15);
+Bw=(p14-p15);
+Cw = cross(Aw,Bw);
+normwp= sqrt(sum(Cw.^2,2));
+for i=1: size(Aw,1)
+    wpelvis(i,:)=Cw(i,:)/normwp(i);
 end
+
+%calculo de u de pelvis
+upelvis= cross(vpelvis,wpelvis);
+
+%Para el calculo de la posicion de la cadera derecha y de la izquierda...
+prhip= p15+ 0.598*A2*upelvis - 0.344*A2*vpelvis - 0,290*A2*wpelvis;
+plhip= p15+ 0.598*A2*upelvis + 0.344*A2*vpelvis - 0,290*A2*wpelvis;
+
+
+%% CALCULO U V W PARA CENTRO ARTICULAR RODILLAS
+%RODILLA DERECHA
+%calculo de v de rodilla
+RAvp= p3-p5; %[x y z]
+RBvp= RAvp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
+Rnormvp= sqrt(sum(RBvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
+for i=1: size(RAvp,1)
+    Rvrodilla(i,:)=RAvp(i,:)/Rnormvp(i);
+end
+
+%calculo de u de rodilla
+RAu=(p7-p15);
+RBu=(p14-p15);
+RCu = cross(RAu,RBu);
+Rnormwp= sqrt(sum(RCu.^2,2));
+for i=1: size(RAu,1)
+    Rurodilla(i,:)=RCu(i,:)/Rnormup(i);
+end
+
+%calculo de w de rodilla
+Rwrodilla= cross(Rvrodilla,Rurodilla);
+
 % RODILLA IZQUIERDA
-for i=1:10:length(p12)
-    quiver3(p12(i,1),p12(i,2),p12(i,3),Lurodilla(i,1)./10,Lurodilla(i,2)./10,Lurodilla(i,3)./10,'b');
-    hold on;
-    quiver3(p12(i,1),p12(i,2),p12(i,3),Lvrodilla(i,1)./10,Lvrodilla(i,2)./10,Lvrodilla(i,3)./10,'r');
-    hold on;
-    quiver3(p12(i,1),p12(i,2),p12(i,3),Lwrodilla(i,1)./10,Lwrodilla(i,2)./10,Lwrodilla(i,3)./10,'g');
-    hold on;
+%calculo de v de rodilla
+LAvp= p10-p12; %[x y z]
+LBvp= LAvp.^2; %Elevo todo al cuadrado x^2,y^2,z^2
+Lnormvp= sqrt(sum(LBvp,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
+
+for i=1: size(LAvp,1)
+    Lvrodilla(i,:)=LAvp(i,:)/Lnormvp(i);
 end
 
-legend('Marcador del Sacro', 'Marcador del ASIS derecho','Marcador del ASIS izquierdo','u de pelvis','v de pelvis','w de pelvis');
-xlabel('Eje X');
-ylabel('Eje y');
-zlabel ('Eje z');
-title('Trayectoria de marcadores y diagrama de u,v,w sobre el marcador sacro')
-grid on;
+%calculo de u de rodilla (u va hacia adelante)
+LAu=(p10-p12);
+LBu=(p11-p12);
+LCu = cross(LAu,LBu);
+Lnormwp= sqrt(sum(LCu.^2,2));
+for i=1: size(LAu,1)
+    Lurodilla(i,:)=LCu(i,:)/Lnormup(i);
+end
+
+%calculo de w de rodilla
+Lwrodilla= cross(Lvrodilla,Lurodilla);
+
+%centro articular rodilla derecha
+prknee = p5 + A11*Rurodilla + A11*Rvrodilla + 0.5*A11*Rwrodilla;
+%centro articular rodilla izquierda
+plknee= p12 + A12*Lurodilla + A12*Lvrodilla - 0.5*A12*Lwrodilla;
 
 
+%% CALCULO U V W PARA CENTRO ARTICULAR PIE Y TOBILLO
+% PIE DERECHO
+%calculo de u de pie
+RTAup= p1-p2; %[x y z]
+RTBup= RTAup.^2; %Elevo todo al cuadrado x^2,y^2,z^2
+RTnormup= sqrt(sum(RTBup,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
+for i=1: size(RTAup,1)
+    Rupie(i,:)=RTAup(i,:)/RTnormup(i);
+end
+
+%calculo de w de pie
+RTAw=(p1-p3);
+RTBw=(p2-p3);
+RTCw = cross(RTAw,RTBw);
+RTnormwp= sqrt(sum(RTCw.^2,2));
+for i=1: size(RTAw,1)
+    Rwpie(i,:)=RTCw(i,:)/RTnormwp(i);
+end
+
+%calculo de v de pie
+Rvpie= cross(Rwpie,Rupie);
+
+%centro articular pie derecho y tobillo derecho
+prtoe = p3 + 0.742*A13*Rupie + 1.074*A15*Rvpie - 0.187*A19*Rwpie;
+prtobillo = p3 + 0.016*A13*Rupie + 0.392*A15*Rvpie + 0.478*A17*Rwpie;
+
+%PIE IZQUIERDO
+%calculo de u de pie
+LTAup= p10-p12; %[x y z]
+LTBup= LTAup.^2; %Elevo todo al cuadrado x^2,y^2,z^2
+LTnormup= sqrt(sum(LTBup,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
+
+for i=1: size(LTAup,1)
+    Lupie(i,:)=LTAup(i,:)/LTnormup(i);
+end
+
+%calculo de w de pie
+LTAw=(p10-p12);
+LTBw=(p11-p12);
+LTCw = cross(LTAw,LTBw);
+LTnormwp= sqrt(sum(LTCw.^2,2));
+for i=1: size(LTAw,1)
+    Lwpie(i,:)=LTCw(i,:)/LTnormwp(i);
+end
+
+%calculo de v de pie
+Lvpie= cross(Lwpie,Lupie);
+
+% centro articular pie izquierdo y tobillo izquierdo
+pltoe= p10 + 0.742*A14*Lupie + 1.074*A16*Lvpie + 0.187*A20*Lwpie;
+pltobillo = p10 + 0.016*A14*Lupie + 0.392*A16*Lvpie - 0.478*A18*Lwpie;
 
 
+%% CALCULO DE CENTROS DE MASA DEL MUSLO - PIERNA - PIE
+CMPmusR = prhip + 0.39*(rpknee - prhip)
+CMPmusL = plhip + 0.39*(lpknee - plhip)
 
+CMPcalfR = prknee + 0.42*(prtobillo - prknee)
+CMPcalfL = plknee + 0.42*(pltobillo - plknee)
+
+CMPfootR = p2 + 0.44*(prtoe-p2)
+CMPfootL = p9 + 0.44*(pltoe-p9)
+
+
+%% CALCULO DE VERSORES I J K DE SEGMENTOS
+
+% SEGMENTO PELVIS
+ihip = wpelvis;
+jhip = upelvis;
+khip = vpelvis;
+
+% SEGMENTO MUSLO DERECHO
+% versor i
+imusAr= prhip - prknee;
+imusBr= imusAr.^2;
+iMRnorma= sqrt(sum(imusBr,2));
+for i=1: size(imusAr,1)
+    i1(i,:)=imusAr(i,:)/iMRnorma(i); %versor i para el muslo derecho
+end
+
+% versor j
+jmusAr=(p6-prhip);
+jmusBr=(prknee-prhip);
+jmusCr = cross(jmusAr,jmusBr);
+jMRnorma= sqrt(sum(jmusCr.^2,2));
+for i=1: size(jmusAr,1)
+    j1(i,:)=jmusCr(i,:)/jMRnorma(i); %versor j para el mulso derecho
+end
+
+% versor k
+k1= cross(i1,j1); %versor k para el muslo derecho
+
+% SEGMENTO MUSLO IZQUIERDO
+% versor i
+imusAl= plhip - plknee;
+imusBl= imusAl.^2;
+iMLnorma= sqrt(sum(imusBl,2));
+for i=1: size(imusAl,1)
+    i2(i,:)=imusAl(i,:)/iMLnorma(i); %versor i para el muslo izquierdo
+end
+
+% versor j
+jmusAl=(plknee-plhip);
+jmusBl=(p13-plhip);
+jmusCl = cross(jmusAl,jmusBl);
+jMLnorma= sqrt(sum(jmusCl.^2,2));
+for i=1: size(jmusAl,1)
+    j2(i,:)=jmusCl(i,:)/jMLnorma(i); %versor j para el mulso izquierdo
+end
+
+% versor k
+k2= cross(i2,j2); %versor k para el muslo izquierdo
+
+
+%% SEGMENTO 

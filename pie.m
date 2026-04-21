@@ -51,3 +51,5 @@ Lvpie= cross(Lwpie,Lupie);
 %% centro articular pie izquierdo y tobillo izquierdo
 pltoe= p10 + 0.742*A14*Lupie + 1.074*A16*Lvpie + 0.187*A20*Lwpie;
 pltobillo = p10 + 0.016*A14*Lupie + 0.392*A16*Lvpie - 0.478*A18*Lwpie;
+
+%% GRAFICO DE VERSORES
