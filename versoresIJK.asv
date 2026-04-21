@@ -157,21 +157,21 @@ k5= cross(i5,j5);
 
 %PIE IZQUIERDO
 % versor i
-ifootAl= p9 - pltoe;
+ifootAl= plknee - pltobillo;
 ifootBl= ifootAl.^2;
-iFLnorma= sqrt(sum(ifootBl,2));
+iCLnorma= sqrt(sum(ifootBl,2));
 for i=1: size(ifootAl,1)
-    i6(i,:)=ifootAl(i,:)/iFLnorma(i);
+    i4(i,:)=ifootAl(i,:)/iCLnorma(i);
 end
 
 % versor j
-jfootAl=(pltobillo-p9);
-jfootBl=(pltoe-p9);
-jfootCl = cross(jfootAl,jfootBl);
-jFLnorma= sqrt(sum(jfootCl.^2,2));
-for i=1: size(jfootAl,1)
-    j6(i,:)=jfootCl(i,:)/jFLnorma(i);
+jcalfAl=(pltobillo-plknee);
+jcalfBl=(p12-plknee);
+jcalfCl = cross(jcalfAl,jcalfBl);
+jCLnorma= sqrt(sum(jcalfCl.^2,2));
+for i=1: size(jcalfAl,1)
+    j4(i,:)=jcalfCl(i,:)/jCLnorma(i);
 end
 
 % versor k
-k6= cross(i6,j6);
+k4= cross(i4,j4);

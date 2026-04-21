@@ -317,7 +317,6 @@ end
 k2= cross(i2,j2); %versor k para el muslo izquierdo
 
 
-
 %% SEGMENTOS PIERNA DERECHA E IZQUIERDA  i3,j3,k3   i4,j4,k4
 % PIERNA DERECHA
 % versor i
@@ -360,7 +359,6 @@ end
 
 % versor k
 k4= cross(i4,j4);
-
 
 
 %% SEGMENTO PIE VERSORES i5,j5,k5   i6,j6,k6
@@ -470,20 +468,13 @@ end
 
 %pie derecho
 for i = 1:20:length(p15)
-    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), i5(i,1)./10, i5(i,2)./10, i5(i,3)./10, 'r');
+    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), i3(i,1)./10, i3(i,2)./10, i3(i,3)./10, 'r');
     hold on;
-    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), j5(i,1)./10, j5(i,2)./10, j5(i,3)./10, 'g');
+    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), j3(i,1)./10, j3(i,2)./10, j3(i,3)./10, 'g');
     hold on;
-    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), k5(i,1)./10, k5(i,2)./10, k5(i,3)./10, 'b');
+    quiver3(CMPfootR(i,1),CMPfootR(i,2), CMPfootR(i,3), k3(i,1)./10, k3(i,2)./10, k3(i,3)./10, 'b');
 end
 %pie izquierdo
-for i = 1:20:length(p15)
-    quiver3(CMPfootL(i,1),CMPfootL(i,2), CMPfootL(i,3), i6(i,1)./10, i6(i,2)./10, i6(i,3)./10, 'r');
-    hold on;
-    quiver3(CMPfootL(i,1),CMPfootL(i,2), CMPfootL(i,3), j6(i,1)./10, j6(i,2)./10, j6(i,3)./10, 'g');
-    hold on;
-    quiver3(CMPfootL(i,1),CMPfootL(i,2), CMPfootL(i,3), k6(i,1)./10, k6(i,2)./10, k6(i,3)./10, 'b');
-end
 
 legend('marcador sacro', 'centro masa mus derecho', 'centro masa mus izquierdo', 'i de pelvis','j de pelvis','k de pelvis');
 xlabel('Eje x');
