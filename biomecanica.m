@@ -667,13 +667,15 @@ title('Angulo de flexion (+) y extension (-) de tobillo')
 ylabel('Grados');
 grid on;
 
-subplot(3,3,8);plot(Beta_Rankle,'r', 'LineWidth',2);hold on; plot(Beta_Lankle,'b','LineWidth',2);
+subplot(3,3,8);plot(Gamma_Rankle,'r', 'LineWidth',2);hold on; plot(Gamma_Lankle,'b','LineWidth',2);
 title('Angulo de abduccion (+) y aduccion (-) de tobillo')
 ylabel('Grados');
 grid on;
 
-subplot(3,3,9);plot(Gamma_Rankle,'r', 'LineWidth',2);hold on; plot(Gamma_Lankle,'b','LineWidth',2);
+subplot(3,3,9);plot(Beta_Rankle,'r', 'LineWidth',2);hold on; plot(Beta_Lankle,'b','LineWidth',2);
 title('Angulo de rotacion interna (+) y rotacion externa (-) de tobillo')
 ylabel('Grados');
 grid on;
 
+
+%% 
