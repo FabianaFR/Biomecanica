@@ -101,30 +101,6 @@ A19= Antropometria.children.ANCHO_PIE_DERECHO.info.values/100;
 A20= Antropometria.children.ANCHO_PIE_IZQUIERDO.info.values/100;
 
 
-%% Graficos de marcadores
-figure
-%cadera
-plot3(p15(:,1),p15(:,2),p15(:,3),'r','LineWidth',2)
-hold on;
-plot3(p7(:,1),p7(:,2),p7(:,3),'r','LineWidth',2)
-hold on;
-plot3(p14(:,1),p14(:,2),p14(:,3),'r','LineWidth',2)
-hold on;
-%miembro inferior derecho
-plot3(p6(:,1),p6(:,2),p6(:,3),'k','LineWidth',2)
-hold on;
-plot3(p5(:,1),p5(:,2),p5(:,3),'k','LineWidth',2)
-hold on;
-plot3(p3(:,1),p3(:,2),p3(:,3),'k','LineWidth',2)
-hold on;
-%miembro inferior izquierdo
-plot3(p13(:,1),p13(:,2),p13(:,3),'b','LineWidth',2)
-hold on;
-plot3(p12(:,1),p12(:,2),p12(:,3),'b','LineWidth',2)
-hold on;
-plot3(p10(:,1),p10(:,2),p10(:,3),'b','LineWidth',2)
-hold on;
-
 
 %% Calculo de u,v,w PARA CENTRO ARTICULAR CADERA
 %calculo de v de pelvis
@@ -164,16 +140,16 @@ for i=1: size(RAvp,1)
 end
 
 %calculo de u de rodilla
-RAu=(p7-p15);
-RBu=(p14-p15);
+RAu=(p4-p5);
+RBu=(p3-p5);
 RCu = cross(RAu,RBu);
-Rnormwp= sqrt(sum(RCu.^2,2));
+Rnormup= sqrt(sum(RCu.^2,2));
 for i=1: size(RAu,1)
     Rurodilla(i,:)=RCu(i,:)/Rnormup(i);
 end
 
 %calculo de w de rodilla
-Rwrodilla= cross(Rvrodilla,Rurodilla);
+Rwrodilla= cross(Rurodilla,Rvrodilla);
 
 % RODILLA IZQUIERDA
 %calculo de v de rodilla
@@ -189,13 +165,13 @@ end
 LAu=(p10-p12);
 LBu=(p11-p12);
 LCu = cross(LAu,LBu);
-Lnormwp= sqrt(sum(LCu.^2,2));
+Lnormup= sqrt(sum(LCu.^2,2));
 for i=1: size(LAu,1)
     Lurodilla(i,:)=LCu(i,:)/Lnormup(i);
 end
 
 %calculo de w de rodilla
-Lwrodilla= cross(Lvrodilla,Lurodilla);
+Lwrodilla= cross(Lurodilla,Lvrodilla);
 
 %centro articular rodilla derecha
 prknee = p5 + A11*Rurodilla + A11*Rvrodilla + 0.5*A11*Rwrodilla;
@@ -231,17 +207,16 @@ prtobillo = p3 + 0.016*A13*Rupie + 0.392*A15*Rvpie + 0.478*A17*Rwpie;
 
 %PIE IZQUIERDO
 %calculo de u de pie
-LTAup= p10-p12; %[x y z]
+LTAup= p8-p9; %[x y z]
 LTBup= LTAup.^2; %Elevo todo al cuadrado x^2,y^2,z^2
 LTnormup= sqrt(sum(LTBup,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-
 for i=1: size(LTAup,1)
     Lupie(i,:)=LTAup(i,:)/LTnormup(i);
 end
 
 %calculo de w de pie
-LTAw=(p10-p12);
-LTBw=(p11-p12);
+LTAw=(p8-10);
+LTBw=(p9-p10);
 LTCw = cross(LTAw,LTBw);
 LTnormwp= sqrt(sum(LTCw.^2,2));
 for i=1: size(LTAw,1)
@@ -257,8 +232,8 @@ pltobillo = p10 + 0.016*A14*Lupie + 0.392*A16*Lvpie - 0.478*A18*Lwpie;
 
 
 %% CALCULO DE CENTROS DE MASA DEL MUSLO - PIERNA - PIE
-CMPmusR = prhip + 0.39*(rpknee - prhip)
-CMPmusL = plhip + 0.39*(lpknee - plhip)
+CMPmusR = prhip + 0.39*(prknee - prhip)
+CMPmusL = plhip + 0.39*(plknee - plhip)
 
 CMPcalfR = prknee + 0.42*(prtobillo - prknee)
 CMPcalfL = plknee + 0.42*(pltobillo - plknee)
@@ -373,17 +348,17 @@ for i=1: size(ifootAr,1)
     i5(i,:)=ifootAr(i,:)/iFRnorma(i);
 end
 
-% versor j
-jfootAr=(prtobillo-p2);
-jfootBr=(prtoe-p2);
-jfootCr = cross(jfootAr,jfootBr);
-jFRnorma= sqrt(sum(jfootCr.^2,2));
-for i=1: size(jfootAr,1)
-    j5(i,:)=jfootCr(i,:)/jFRnorma(i);
+% versor K
+kfootAr=(prtobillo-p2);
+kfootBr=(prtoe-p2);
+kfootCr = cross(kfootAr,kfootBr);
+kFRnorma= sqrt(sum(kfootCr.^2,2));
+for i=1: size(kfootAr,1)
+    k5(i,:)=kfootCr(i,:)/kFRnorma(i);
 end
 
 % versor k
-k5= cross(i5,j5);
+j5= cross(i5,k5);
 
 %PIE IZQUIERDO
 % versor i
@@ -406,23 +381,21 @@ end
 % versor k
 k6= cross(i6,j6);
 
-
-
 %% GRAFICAS DE IJK PARA MUSLOS PIERNA Y PIE
 figure;
-plot3(p15(;,1),p15(;,2), p15(;,3),'k','LineWidth',2)
+plot3(p15(:,1),p15(:,2), p15(:,3),'k','LineWidth',2)
 hold on;
-plot3(CMPmusR(;,1),CMPmusR(;,2), CMPmusR(;,3),'r','LineWidth',2)
+plot3(CMPmusR(:,1),CMPmusR(:,2), CMPmusR(:,3),'r','LineWidth',2)
 hold on;
-plot3(CMPmusL(;,1),CMPmusL(;,2), CMPmusL(;,3),'r','LineWidth',2)
+plot3(CMPmusL(:,1),CMPmusL(:,2), CMPmusL(:,3),'Y','LineWidth',2)
 hold on;
-plot3(CMPcalfR(;,1),CMPcalfR(;,2), CMPcalfR(;,3),'b','LineWidth',2)
+plot3(CMPcalfR(:,1),CMPcalfR(:,2), CMPcalfR(:,3),'b','LineWidth',2)
 hold on;
-plot3(CMPcalfL(;,1),CMPcalfL(;,2), CMPcalfL(;,3),'b','LineWidth',2)
+plot3(CMPcalfL(:,1),CMPcalfL(:,2), CMPcalfL(:,3),'b','LineWidth',2)
 hold on;
-plot3(CMPfootR(;,1),CMPfootR(;,2), CMPfootR(;,3),'b','LineWidth',2)
+plot3(CMPfootR(:,1),CMPfootR(:,2), CMPfootR(:,3),'b','LineWidth',2)
 hold on;
-plot3(CMPfootL(;,1),CMPfootL(;,2), CMPfootL(;,3),'b','LineWidth',2)
+plot3(CMPfootL(:,1),CMPfootL(:,2), CMPfootL(:,3),'b','LineWidth',2)
 hold on;
 
 %cadera
@@ -485,9 +458,222 @@ for i = 1:20:length(p15)
     quiver3(CMPfootL(i,1),CMPfootL(i,2), CMPfootL(i,3), k6(i,1)./10, k6(i,2)./10, k6(i,3)./10, 'b');
 end
 
-legend('marcador sacro', 'centro masa mus derecho', 'centro masa mus izquierdo', 'i de pelvis','j de pelvis','k de pelvis');
-xlabel('Eje x');
+
+
+xlabel('Eje X');
 ylabel('Eje y');
-zlabel('Eje z');
-title('Trayectoria de marcadores, centros de masa y versores ijk de pelvis y muslo D y I');
+zlabel ('Eje z');
+title('GRAFICOS de IJK para miembros inferiores')
 grid on;
+
+
+%IJK nos da orientacion (inclinación) del segmento respecto de la habitacion
+%uvw (DAN IDEA DE COMO SE MUEVEN LOS MARCADORES) usan marcadores para calcular los c articualres, preo no identifica en
+%cada versor la inclinacion de un segmento, SOLO SIRVEN PARA CALCULAR IJK
+%para generar ijk usamos toda la infromacion del segmento y los formamos a
+%partir de los centros articulares
+
+
+%% CALCULO DE ANGULOS ARTICULARES 
+
+%calculo cadera derecha
+acadeR = cross(khip,i1);
+normcadR= sqrt(sum(acadeR.^2,2));
+for i=1: size(acadeR,1)
+    Ir_HJC(i,:)=acadeR(i,:)/normcadR(i);
+end
+
+%calculo cadera izquierda
+acadeL = cross(khip,i2);
+normcadL= sqrt(sum(acadeL.^2,2));
+for i=1: size(acadeL,1)
+    Il_HJC(i,:)=acadeL(i,:)/normcadL(i);
+end
+
+%angulo alfa para las caderas derecha e izquierda
+p_ahr=dot(Ir_HJC,ihip,2);
+p_ahl=dot(Il_HJC,ihip,2);
+alfa_RHJC=asind(p_ahr);
+alfa_LHJC=asind(p_ahl);
+
+%angulo beta para las caderas derecha e izquierda
+p_bhr=dot(khip,i1,2);
+p_bhl=dot(khip,i2,2);
+beta_RHJC=asind(p_bhr);
+beta_LHJC=-asind(p_bhl);
+
+%angulo gamma para las caderas derecha e izquierda
+p_ghr=dot(Ir_HJC,k1,2);
+p_ghl=dot(Il_HJC,k2,2);
+gamma_RHJC=-asind(p_ghr);
+gamma_LHJC=asind(p_ghl);
+
+
+%% angulos articulares para rodillas
+%calculo rodilla derecha
+arodR = cross(k1,i3);
+normrodR= sqrt(sum(arodR.^2,2));
+for i=1: size(arodR,1)
+    Ir_KJC(i,:)=arodR(i,:)/normrodR(i);
+end
+
+%calculo rodilla izquierda
+arodL = cross(k2,i4);
+normrodL= sqrt(sum(arodL.^2,2));
+for i=1: size(arodL,1)
+    Il_KJC(i,:)=arodL(i,:)/normrodL(i);
+end
+
+%angulo alfa para las rodilla derecha e izquierda
+p_akr=dot(Ir_KJC,i1,2);
+p_akl=dot(Il_KJC,i2,2);
+alfa_RKJC=-asind(p_akr);
+alfa_LKJC=-asind(p_akl);
+
+%angulo beta para las rodilla derecha e izquierda
+p_bkr=dot(k1,i3,2);
+p_bkl=dot(k2,i4,2);
+beta_RKJC=asind(p_bkr);
+beta_LKJC=-asind(p_bkl);
+
+%angulo gamma para las rodilla derecha e izquierda
+p_gkr=dot(Ir_KJC,k3,2);
+p_gkl=dot(Il_KJC,k4,2);
+gamma_RKJC=-asind(p_gkr);
+gamma_LKJC=asind(p_gkl);
+
+
+%% angulos articulares para tobillos
+%calculo tobillo derecho
+atobR = cross(k3,i5);
+normtobR= sqrt(sum(atobR.^2,2));
+for i=1: size(atobR,1)
+    Ir_AJC(i,:)=atobR(i,:)/normtobR(i);
+end
+
+%calculo tobillo derecho
+atobL = cross(k4,i6);
+normtobL= sqrt(sum(atobL.^2,2));
+for i=1: size(atobL,1)
+    Il_AJC(i,:)=atobL(i,:)/normtobL(i);
+end
+
+%angulo alfa para los tobillos derecho e izquierdo
+p_aar=dot(Ir_AJC,j3,2);
+p_aal=dot(Il_AJC,j4,2);
+alfa_RAJC=-asind(p_aar);
+alfa_LAJC=-asind(p_aal);
+%angulo beta para los tobillos derecho e izquierdo
+p_bar=dot(k3,i5,2);
+p_bal=dot(k4,i6,2);
+beta_RAJC=asind(p_bar);
+beta_LAJC=-asind(p_bal);
+%angulo gamma para los tobillos derecho e izquierdo
+p_gar=dot(Ir_AJC,k5,2);
+p_gal=dot(Il_AJC,k6,2);
+gamma_RAJC=asind(p_gar);
+gamma_LAJC=-asind(p_gal);
+
+
+%% RECORTES
+
+%cadera derecha
+alfa_Rhip=alfa_RHJC(1:RHS2-inicio);
+[Alfa_Rhip]=InterpolaA100Muestras(alfa_Rhip);
+beta_Rhip=beta_RHJC(1:RHS2-inicio);
+[Beta_Rhip]=InterpolaA100Muestras(beta_Rhip);
+gamma_Rhip=gamma_RHJC(1:RHS2-inicio);
+[Gamma_Rhip]=InterpolaA100Muestras(gamma_Rhip);
+
+%rodilla derecha
+alfa_Rknee=alfa_RKJC(1:RHS2-inicio);
+[Alfa_Rknee]=InterpolaA100Muestras(alfa_Rknee);
+beta_Rknee=beta_RKJC(1:RHS2-inicio);
+[Beta_Rknee]=InterpolaA100Muestras(beta_Rknee);
+gamma_Rknee=gamma_RKJC(1:RHS2-inicio);
+[Gamma_Rknee]=InterpolaA100Muestras(gamma_Rknee);
+
+%tobillo derecho
+alfa_Rankle=alfa_RAJC(1:RHS2-inicio);
+[Alfa_Rankle]=InterpolaA100Muestras(alfa_Rankle);
+beta_Rankle=beta_RAJC(1:RHS2-inicio);
+[Beta_Rankle]=InterpolaA100Muestras(beta_Rankle);
+gamma_Rankle=gamma_RAJC(1:RHS2-inicio);
+[Gamma_Rankle]=InterpolaA100Muestras(gamma_Rankle);
+
+
+%cadera izquierda
+alfa_Lhip=alfa_LHJC(LHS1-inicio:LHS2-inicio);
+[Alfa_Lhip]=InterpolaA100Muestras(alfa_Lhip);
+beta_Lhip=beta_LHJC(LHS1-inicio:LHS2-inicio);
+[Beta_Lhip]=InterpolaA100Muestras(beta_Lhip);
+gamma_Lhip=gamma_LHJC(LHS1-inicio:LHS2-inicio);
+[Gamma_Lhip]=InterpolaA100Muestras(gamma_Lhip);
+
+%rodilla izquierda
+alfa_Lknee=alfa_LKJC(LHS1-inicio:LHS2-inicio);
+[Alfa_Lknee]=InterpolaA100Muestras(alfa_Lknee);
+beta_Lknee=beta_LKJC(LHS1-inicio:LHS2-inicio);
+[Beta_Lknee]=InterpolaA100Muestras(beta_Lknee);
+gamma_Lknee=gamma_LKJC(LHS1-inicio:LHS2-inicio);
+[Gamma_Lknee]=InterpolaA100Muestras(gamma_Lknee);
+
+%tobillo izquierdo
+alfa_Lankle=alfa_LAJC(LHS1-inicio:LHS2-inicio);
+[Alfa_Lankle]=InterpolaA100Muestras(alfa_Lankle);
+beta_Lankle=beta_LAJC(LHS1-inicio:LHS2-inicio);
+[Beta_Lankle]=InterpolaA100Muestras(beta_Lankle);
+gamma_Lankle=gamma_LAJC(LHS1-inicio:LHS2-inicio);
+[Gamma_Lankle]=InterpolaA100Muestras(gamma_Lankle);
+
+%% PLOT DE LOS ANGULOS
+% cadera
+subplot(3,3,1);plot(Alfa_Rhip,'r', 'LineWidth',2);hold on; plot(Alfa_Lhip,'b','LineWidth',2);
+title('Angulo de flexion (+) y extension (-) de cadera')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,2);plot(Beta_Rhip,'r', 'LineWidth',2);hold on; plot(Beta_Lhip,'b','LineWidth',2);
+title('Angulo de abduccion (+) y aduccion (-) de cadera')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,3);plot(Gamma_Rhip,'r', 'LineWidth',2);hold on; plot(Gamma_Lhip,'b','LineWidth',2);
+title('Angulo de rotacion interna (+) y rotacion externa (-) de cadera')
+ylabel('Grados');
+grid on;
+
+
+%rodilla
+subplot(3,3,4);plot(Alfa_Rknee,'r', 'LineWidth',2);hold on; plot(Alfa_Lknee,'b','LineWidth',2);
+title('Angulo de flexion (+) y extension (-) de rodilla')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,5);plot(Beta_Rknee,'r', 'LineWidth',2);hold on; plot(Beta_Lknee,'b','LineWidth',2);
+title('Angulo de abduccion (+) y aduccion (-) de rodilla')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,6);plot(Gamma_Rknee,'r', 'LineWidth',2);hold on; plot(Gamma_Lknee,'b','LineWidth',2);
+title('Angulo de rotacion interna (+) y rotacion externa (-) de rodilla')
+ylabel('Grados');
+grid on;
+
+
+% tobillo
+subplot(3,3,7);plot(Alfa_Rankle,'r', 'LineWidth',2);hold on; plot(Alfa_Lankle,'b','LineWidth',2);
+title('Angulo de flexion (+) y extension (-) de tobillo')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,8);plot(Beta_Rankle,'r', 'LineWidth',2);hold on; plot(Beta_Lankle,'b','LineWidth',2);
+title('Angulo de abduccion (+) y aduccion (-) de tobillo')
+ylabel('Grados');
+grid on;
+
+subplot(3,3,9);plot(Gamma_Rankle,'r', 'LineWidth',2);hold on; plot(Gamma_Lankle,'b','LineWidth',2);
+title('Angulo de rotacion interna (+) y rotacion externa (-) de tobillo')
+ylabel('Grados');
+grid on;
+
