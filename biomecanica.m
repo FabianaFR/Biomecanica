@@ -174,9 +174,9 @@ end
 Lwrodilla= cross(Lurodilla,Lvrodilla);
 
 %centro articular rodilla derecha
-prknee = p5 + A11*Rurodilla + A11*Rvrodilla + 0.5*A11*Rwrodilla;
+prknee = p5 + 0.0*A11*Rurodilla + 0.0*A11*Rvrodilla + 0.5*A11*Rwrodilla;
 %centro articular rodilla izquierda
-plknee= p12 + A12*Lurodilla + A12*Lvrodilla - 0.5*A12*Lwrodilla;
+plknee= p12 + 0.0*A12*Lurodilla + 0.0*A12*Lvrodilla - 0.5*A12*Lwrodilla;
 
 
 %% CALCULO U V W PARA CENTRO ARTICULAR PIE Y TOBILLO
@@ -358,7 +358,7 @@ for i=1: size(kfootAr,1)
 end
 
 % versor k
-j5= cross(i5,k5);
+j5= cross(k5,i5);
 
 %PIE IZQUIERDO
 % versor i
@@ -369,17 +369,17 @@ for i=1: size(ifootAl,1)
     i6(i,:)=ifootAl(i,:)/iFLnorma(i);
 end
 
-% versor j
-jfootAl=(pltobillo-p9);
-jfootBl=(pltoe-p9);
-jfootCl = cross(jfootAl,jfootBl);
-jFLnorma= sqrt(sum(jfootCl.^2,2));
-for i=1: size(jfootAl,1)
-    j6(i,:)=jfootCl(i,:)/jFLnorma(i);
+% versor k
+kfootAl=(pltobillo-p9);
+kfootBl=(pltoe-p9);
+kfootCl = cross(kfootAl,kfootBl);
+kFLnorma= sqrt(sum(kfootCl.^2,2));
+for i=1: size(kfootAl,1)
+    k6(i,:)=kfootCl(i,:)/kFLnorma(i);
 end
 
-% versor k
-k6= cross(i6,j6);
+% versor j
+j6= cross(k6,i6);
 
 %% GRAFICAS DE IJK PARA MUSLOS PIERNA Y PIE
 figure;
@@ -580,24 +580,30 @@ gamma_LAJC=-asind(p_gal);
 %cadera derecha
 alfa_Rhip=alfa_RHJC(1:RHS2-inicio);
 [Alfa_Rhip]=InterpolaA100Muestras(alfa_Rhip);
+
 beta_Rhip=beta_RHJC(1:RHS2-inicio);
 [Beta_Rhip]=InterpolaA100Muestras(beta_Rhip);
+
 gamma_Rhip=gamma_RHJC(1:RHS2-inicio);
 [Gamma_Rhip]=InterpolaA100Muestras(gamma_Rhip);
 
 %rodilla derecha
 alfa_Rknee=alfa_RKJC(1:RHS2-inicio);
 [Alfa_Rknee]=InterpolaA100Muestras(alfa_Rknee);
+
 beta_Rknee=beta_RKJC(1:RHS2-inicio);
 [Beta_Rknee]=InterpolaA100Muestras(beta_Rknee);
+
 gamma_Rknee=gamma_RKJC(1:RHS2-inicio);
 [Gamma_Rknee]=InterpolaA100Muestras(gamma_Rknee);
 
 %tobillo derecho
 alfa_Rankle=alfa_RAJC(1:RHS2-inicio);
 [Alfa_Rankle]=InterpolaA100Muestras(alfa_Rankle);
+
 beta_Rankle=beta_RAJC(1:RHS2-inicio);
 [Beta_Rankle]=InterpolaA100Muestras(beta_Rankle);
+
 gamma_Rankle=gamma_RAJC(1:RHS2-inicio);
 [Gamma_Rankle]=InterpolaA100Muestras(gamma_Rankle);
 
@@ -613,16 +619,20 @@ gamma_Lhip=gamma_LHJC(LHS1-inicio:LHS2-inicio);
 %rodilla izquierda
 alfa_Lknee=alfa_LKJC(LHS1-inicio:LHS2-inicio);
 [Alfa_Lknee]=InterpolaA100Muestras(alfa_Lknee);
+
 beta_Lknee=beta_LKJC(LHS1-inicio:LHS2-inicio);
 [Beta_Lknee]=InterpolaA100Muestras(beta_Lknee);
+
 gamma_Lknee=gamma_LKJC(LHS1-inicio:LHS2-inicio);
 [Gamma_Lknee]=InterpolaA100Muestras(gamma_Lknee);
 
 %tobillo izquierdo
 alfa_Lankle=alfa_LAJC(LHS1-inicio:LHS2-inicio);
 [Alfa_Lankle]=InterpolaA100Muestras(alfa_Lankle);
+
 beta_Lankle=beta_LAJC(LHS1-inicio:LHS2-inicio);
 [Beta_Lankle]=InterpolaA100Muestras(beta_Lankle);
+
 gamma_Lankle=gamma_LAJC(LHS1-inicio:LHS2-inicio);
 [Gamma_Lankle]=InterpolaA100Muestras(gamma_Lankle);
 
@@ -678,4 +688,48 @@ ylabel('Grados');
 grid on;
 
 
-%% 
+%% ANGULOS DE EULER
+
+[alfasen1,alfacos1,betasen1,betacos1,gammasen1,gammacos1]=anguloeuler(i1,j1,k1);
+[alfasen2,alfacos2,betasen2,betacos2,gammasen2,gammacos2]=anguloeuler(i2,j2,k2);
+[alfasen3,alfacos3,betasen3,betacos3,gammasen3,gammacos3]=anguloeuler(i3,j3,k3);
+[alfasen4,alfacos4,betasen4,betacos4,gammasen4,gammacos4]=anguloeuler(i4,j4,k4);
+[alfasen5,alfacos5,betasen5,betacos5,gammasen5,gammacos5]=anguloeuler(i5,j5,k5);
+[alfasen6,alfacos6,betasen6,betacos6,gammasen6,gammacos6]=anguloeuler(i6,j6,k6);
+
+%muslo derecho
+alfa1=1;
+beta1=1;
+gamma1=1;
+%muslo izquierdo
+alfa2=1;
+beta2=1;
+gamma2=1;
+
+%pierna derecha
+alfa3=1;
+beta3=1;
+gamma3=1;
+%pierna izquierda
+alfa4=1;
+beta4=1;
+gamma4=1;
+
+%pie derecho
+alfa5=1;
+beta5=1;
+gamma5=1;
+%pie izquierdo
+alfa6=1;
+beta6=1;
+gamma6=1;
+
+%derivadas de los angulos
+
+
+
+
+
+
+
+
