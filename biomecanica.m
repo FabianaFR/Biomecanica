@@ -1,8 +1,17 @@
 clear all;
 
+rutaBTK = 'C:\Users\usuario\Desktop\biomecanicaFabi\btk';
+% Agrego esa carpeta al Path de MATLAB temporalmente mientras corre el script 
+if exist(rutaBTK, 'dir')
+    addpath(rutaBTK);
+else
+    warning('No se encontró la carpeta de BTK en la ruta especificada.');
+end
+
 %%Lectura de los archivos
 
-Archivo='C:\Users\alumno\Desktop\biomecanicaFabi\0029_Davis_Marcha01_Walking10b2021.c3d';
+%CAMBIO: Cuidado cambié la ruta del archivo
+Archivo='C:\Users\usuario\Desktop\biomecanicaFabi\0029_Davis_Marcha01_Walking10b2021.c3d';
 h=btkReadAcquisition(Archivo); %asignación de puntero
 [marcadores,informacionCine]=btkGetMarkers(h);
 [Fuerzas,informacionFuerzas]=btkGetForcePlatforms(h);
@@ -82,7 +91,7 @@ end
 
 %NUEVO PARA CINETICA: PESO Y ALTURA
 A1= Antropometria.children.PESO.info.values; %peso en kg
-altura = Antropometria.children.ALTURA.info.values, %altura en cm, se pasa a metros-> /100
+altura = Antropometria.children.ALTURA.info.values; %altura en cm, se pasa a metros-> /100
 
 A2= Antropometria.children.LONGITUD_ASIS.info.values/100;
 A11= Antropometria.children.DIAMETRO_RODILLA_DERECHA.info.values/100;
@@ -125,8 +134,8 @@ end
 upelvis= cross(vpelvis,wpelvis);
 
 %Para el calculo de la posicion de la cadera derecha y de la izquierda...
-prhip= p15+ 0.598*A2*upelvis - 0.344*A2*vpelvis - 0,290*A2*wpelvis;
-plhip= p15+ 0.598*A2*upelvis + 0.344*A2*vpelvis - 0,290*A2*wpelvis;
+prhip= p15+ 0.598*A2*upelvis - 0.344*A2*vpelvis - 0;290*A2*wpelvis;
+plhip= p15+ 0.598*A2*upelvis + 0.344*A2*vpelvis - 0;290*A2*wpelvis;
 
 
 %% CALCULO U V W PARA CENTRO ARTICULAR RODILLAS
@@ -201,45 +210,47 @@ end
 %calculo de v de pie
 Rvpie= cross(Rwpie,Rupie);
 
-%centro articular pie derecho y tobillo derecho
+% Posición del toe (punta del pie) derecho
 prtoe = p3 + 0.742*A13*Rupie + 1.074*A15*Rvpie - 0.187*A19*Rwpie;
+% Posición del tobillo derecho
 prtobillo = p3 + 0.016*A13*Rupie + 0.392*A15*Rvpie + 0.478*A17*Rwpie;
 
-%PIE IZQUIERDO
-%calculo de u de pie
-LTAup= p8-p9; %[x y z]
-LTBup= LTAup.^2; %Elevo todo al cuadrado x^2,y^2,z^2
-LTnormup= sqrt(sum(LTBup,2)); %Aplico raiz para calcular la norma (proceso que se hace fila por fila)
-for i=1: size(LTAup,1)
-    Lupie(i,:)=LTAup(i,:)/LTnormup(i);
+% %PIE IZQUIERDO
+%Calculo de u left foot
+LUTAu = p8-p9;
+LUTBu = sqrt(sum((p8-p9).^2,2));
+for i=1: size(LUTAu,1)
+    Lupie(i,:)= LUTAu(i,:)/LUTBu(i);
 end
 
-%calculo de w de pie
-LTAw=(p8-10);
-LTBw=(p9-p10);
-LTCw = cross(LTAw,LTBw);
-LTnormwp= sqrt(sum(LTCw.^2,2));
-for i=1: size(LTAw,1)
-    Lwpie(i,:)=LTCw(i,:)/LTnormwp(i);
+
+% Cálculo de w right foot
+LTCw=cross((p8-p10),(p9-p10));
+normucwi=sqrt(sum(LTCw.^2,2));
+for i=1: size(LTCw,1)
+    Lwpie(i,:)=LTCw(i,:)/normucwi(i);
 end
 
-%calculo de v de pie
+
+% Cálculo de v de left foot
 Lvpie= cross(Lwpie,Lupie);
 
-% centro articular pie izquierdo y tobillo izquierdo
-pltoe= p10 + 0.742*A14*Lupie + 1.074*A16*Lvpie + 0.187*A20*Lwpie;
-pltobillo = p10 + 0.016*A14*Lupie + 0.392*A16*Lvpie - 0.478*A18*Lwpie;
+% Posición del tobillo izquierdo
+pltobillo=p10 + 0.016*A14*Lupie + 0.392*A16*Lvpie - 0.478 *A18*Lwpie;
+% Posición del toe (punta del pie) izquierdo
+pltoe=p10 + 0.742*A14*Lupie + 1.074*A16*Lvpie + 0.187 *A20*Lwpie;
+
 
 
 %% CALCULO DE CENTROS DE MASA DEL MUSLO - PIERNA - PIE
-CMPmusR = prhip + 0.39*(prknee - prhip)
-CMPmusL = plhip + 0.39*(plknee - plhip)
+CMPmusR = prhip + 0.39*(prknee - prhip);
+CMPmusL = plhip + 0.39*(plknee - plhip);
 
-CMPcalfR = prknee + 0.42*(prtobillo - prknee)
-CMPcalfL = plknee + 0.42*(pltobillo - plknee)
+CMPcalfR = prknee + 0.42*(prtobillo - prknee);
+CMPcalfL = plknee + 0.42*(pltobillo - plknee);
 
-CMPfootR = p2 + 0.44*(prtoe-p2)
-CMPfootL = p9 + 0.44*(pltoe-p9)
+CMPfootR = p2 + 0.44*(prtoe-p2);
+CMPfootL = p9 + 0.44*(pltoe-p9);
 
 
 %% CALCULO DE VERSORES I J K DE SEGMENTOS PELVIS Y MUSLO
@@ -698,31 +709,31 @@ grid on;
 [alfasen6,alfacos6,betasen6,betacos6,gammasen6,gammacos6]=anguloeuler(i6,j6,k6);
 
 %muslo derecho
-alfa1=1;
-beta1=1;
-gamma1=1;
+alfa1=alfasen1;
+beta1=betacos1;
+gamma1=gammacos1;
 %muslo izquierdo
-alfa2=1;
-beta2=1;
-gamma2=1;
+alfa2=alfasen2;
+beta2=betacos2;
+gamma2=gammacos2;
 
 %pierna derecha
-alfa3=1;
-beta3=1;
-gamma3=1;
+alfa3=alfasen3;
+beta3=betacos3;
+gamma3=gammacos3;
 %pierna izquierda
-alfa4=1;
-beta4=1;
-gamma4=1;
+alfa4=alfasen4;
+beta4=betacos4;
+gamma4=gammacos4;
 
 %pie derecho
-alfa5=1;
-beta5=1;
-gamma5=1;
+alfa5=alfasen5;
+beta5=betasen5;
+gamma5=gammasen5;
 %pie izquierdo
-alfa6=1;
-beta6=1;
-gamma6=1;
+alfa6=alfasen6;
+beta6=betacos6;
+gamma6=gammacos6;
 
 %derivadas de los angulos
 

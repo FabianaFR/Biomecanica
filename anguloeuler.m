@@ -43,8 +43,8 @@ K(:,3) = 1;
 
 Nodo= cross(K,k);
 normNodo=sqrt(sum(Nodo.^2,2));
-for i=1: size(Nodo,1)
-    nodo(i,:)=Nodo(i,:)/normNodo(i);
+for m=1: size(Nodo,1)
+    nodo(m,:)=Nodo(m,:)/normNodo(m);
 end
                                  %Línea de nodos del segmento
 % Calculo de Angulos de Euler
@@ -84,8 +84,8 @@ gamasen = asind(dot(cross (nodo,i),k,2));
 % Alfa
 auxcosalfa1=dot(J,nodo,2);                              % Variables auxiliares, 
 auxcosalfa2= sqrt(sum(auxcosalfa1.^2,2));
-for i=1: size(Nodo,1)
-    auxcosalfa3(i,:)=auxcosalfa1(i,:)/auxcosalfa2(i);
+for m=1: size(Nodo,1)
+    auxcosalfa3(m,:)=auxcosalfa1(m,:)/auxcosalfa2(m);
 end
 
 
