@@ -32,10 +32,10 @@ function [alfasen,alfacos,betasen,betacos,gamasen,gamacos]=anguloeuler(i,j,k)
 I = zeros(size (i)); % I es la matriz [1 0 0]
 I(:,1) = 1;
 
-J = zeros(size (i)); % J = [0 1 0]
+J = zeros(size (j)); % J = [0 1 0]
 J(:,2) = 1;
 
-K = zeros(size (i)); % K = [ 0 0 1]
+K = zeros(size (k)); % K = [ 0 0 1]
 K(:,3) = 1;
 
 
@@ -98,8 +98,8 @@ betacos = acosd(dot(K,k,2));              % ATENCIÓN BETA Y BETA CORREGIDO parec
 %Gamma
 auxcosgama1=dot(j,nodo,2);                              % Variables auxiliares, 
 auxcosgama2= sqrt(sum(auxcosgama1.^2,2));
-for i=1: size(Nodo,1)
-    auxcosgama3(i,:)=auxcosgama1(i,:)/auxcosgama2(i);
+for m=1: size(Nodo,1)
+    auxcosgama3(m,:)=auxcosgama1(m,:)/auxcosgama2(m);
 end
 auxgama=acosd(dot(i,nodo,2));
 gamacos =- dot(auxcosgama3,auxgama,2);

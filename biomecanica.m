@@ -591,30 +591,24 @@ gamma_LAJC=-asind(p_gal);
 %cadera derecha
 alfa_Rhip=alfa_RHJC(1:RHS2-inicio);
 [Alfa_Rhip]=InterpolaA100Muestras(alfa_Rhip);
-
 beta_Rhip=beta_RHJC(1:RHS2-inicio);
 [Beta_Rhip]=InterpolaA100Muestras(beta_Rhip);
-
 gamma_Rhip=gamma_RHJC(1:RHS2-inicio);
 [Gamma_Rhip]=InterpolaA100Muestras(gamma_Rhip);
 
 %rodilla derecha
 alfa_Rknee=alfa_RKJC(1:RHS2-inicio);
 [Alfa_Rknee]=InterpolaA100Muestras(alfa_Rknee);
-
 beta_Rknee=beta_RKJC(1:RHS2-inicio);
 [Beta_Rknee]=InterpolaA100Muestras(beta_Rknee);
-
 gamma_Rknee=gamma_RKJC(1:RHS2-inicio);
 [Gamma_Rknee]=InterpolaA100Muestras(gamma_Rknee);
 
 %tobillo derecho
 alfa_Rankle=alfa_RAJC(1:RHS2-inicio);
 [Alfa_Rankle]=InterpolaA100Muestras(alfa_Rankle);
-
 beta_Rankle=beta_RAJC(1:RHS2-inicio);
 [Beta_Rankle]=InterpolaA100Muestras(beta_Rankle);
-
 gamma_Rankle=gamma_RAJC(1:RHS2-inicio);
 [Gamma_Rankle]=InterpolaA100Muestras(gamma_Rankle);
 
@@ -630,10 +624,8 @@ gamma_Lhip=gamma_LHJC(LHS1-inicio:LHS2-inicio);
 %rodilla izquierda
 alfa_Lknee=alfa_LKJC(LHS1-inicio:LHS2-inicio);
 [Alfa_Lknee]=InterpolaA100Muestras(alfa_Lknee);
-
 beta_Lknee=beta_LKJC(LHS1-inicio:LHS2-inicio);
 [Beta_Lknee]=InterpolaA100Muestras(beta_Lknee);
-
 gamma_Lknee=gamma_LKJC(LHS1-inicio:LHS2-inicio);
 [Gamma_Lknee]=InterpolaA100Muestras(gamma_Lknee);
 
@@ -700,7 +692,6 @@ grid on;
 
 
 %% ANGULOS DE EULER
-
 [alfasen1,alfacos1,betasen1,betacos1,gammasen1,gammacos1]=anguloeuler(i1,j1,k1);
 [alfasen2,alfacos2,betasen2,betacos2,gammasen2,gammacos2]=anguloeuler(i2,j2,k2);
 [alfasen3,alfacos3,betasen3,betacos3,gammasen3,gammacos3]=anguloeuler(i3,j3,k3);
@@ -736,10 +727,46 @@ beta6=betacos6;
 gamma6=gammacos6;
 
 %derivadas de los angulos
+[deralfa1,derbeta1,dergamma1]=derivadas(alfa1,beta1,gamma1,fm);
+[deralfa2,derbeta2,dergamma2]=derivadas(alfa2,beta2,gamma2,fm);
+[deralfa3,derbeta3,dergamma3]=derivadas(alfa3,beta3,gamma3,fm);
+[deralfa4,derbeta4,dergamma4]=derivadas(alfa4,beta4,gamma4,fm);
+[deralfa5,derbeta5,dergamma5]=derivadas(alfa5,beta5,gamma5,fm);
+[deralfa6,derbeta6,dergamma6]=derivadas(alfa6,beta6,gamma6,fm);
 
+%% VELOCIDADES ANGULARES DE LOS SEGMENTOS
+[w1x,w1y,w1z]= velocidadangularsegmento(alfa1,deralfa1,beta1,derbeta1,gamma1,dergamma1);
+[w2x,w2y,w2z]= velocidadangularsegmento(alfa2,deralfa2,beta2,derbeta2,gamma2,dergamma2);
+[w3x,w3y,w3z]= velocidadangularsegmento(alfa3,deralfa3,beta3,derbeta3,gamma3,dergamma3);
+[w4x,w4y,w4z]= velocidadangularsegmento(alfa4,deralfa4,beta4,derbeta4,gamma4,dergamma4);
+[w5x,w5y,w5z]= velocidadangularsegmento(alfa5,deralfa5,beta5,derbeta5,gamma5,dergamma5);
+[w6x,w6y,w6z]= velocidadangularsegmento(alfa6,deralfa6,beta6,derbeta6,gamma6,dergamma6);
+% defino los vectores de cada segmento
+w1=[w1x,w1y,w1z];
+w2=[w2x,w2y,w2z];
+w3=[w3x,w3y,w3z];
+w4=[w4x,w4y,w4z];
+w5=[w5x,w5y,w5z];
+w6=[w6x,w6y,w6z];
 
+%% RECORTE E INTERPOLACIÓN
+% recorte derecho
+w1R = w1(1:RHS2-inicio);
+w2R = w2(1:RHS2-inicio);
+w3R = w3(1:RHS2-inicio);
+w4R = w4(1:RHS2-inicio);
+w5R = w5(1:RHS2-inicio);
+w6R = w6(1:RHS2-inicio);
+% recorte izquierdo
+w1L = w1(LHS1-inicio:LHS2-inicio);
+w2L = w2(LHS1-inicio:LHS2-inicio);
+w3L = w3(LHS1-inicio:LHS2-inicio);
+w4L = w4(LHS1-inicio:LHS2-inicio);
+w5L = w5(LHS1-inicio:LHS2-inicio);
+w6L = w6(LHS1-inicio:LHS2-inicio);
 
-
+%interpolación
+[Alfa_Rhip]=InterpolaA100Muestras(alfa_Rhip);
 
 
 

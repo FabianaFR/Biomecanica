@@ -27,14 +27,14 @@ dertres = zeros(size (tres));
 deltat=1/fm;
 
 for n=2: (length (uno)) -1                 % n va desde 2 hasta fin-1
+    % Se cambia ./ por / ya que (2*deltat) es un escalar (un único número)
+    deruno(n) = (uno(n+1) - uno(n-1)) / (2*deltat);
     
-    deruno(n) = (uno(n+1) - uno(n-1)) ./ (2*deltat);
+    derdos(n) = (dos(n+1) - dos(n-1)) / (2*deltat);
     
-    derdos(n) = (dos(n+1) - dos(n-1)) ./ (2*deltat);
+    dertres(n) = (tres(n+1) - tres(n-1)) / (2*deltat);
     
-    dertres (n) = (tres(n+1) - tres(n-1)) ./ (2*deltat);
-    
-end;
+end
 
 deruno(1)= deruno(2);
 derdos (1) = derdos (2);
