@@ -750,24 +750,80 @@ w5=[w5x,w5y,w5z];
 w6=[w6x,w6y,w6z];
 
 %% RECORTE E INTERPOLACIÓN
-% recorte derecho
-w1R = w1(1:RHS2-inicio);
-w2R = w2(1:RHS2-inicio);
-w3R = w3(1:RHS2-inicio);
-w4R = w4(1:RHS2-inicio);
-w5R = w5(1:RHS2-inicio);
-w6R = w6(1:RHS2-inicio);
-% recorte izquierdo
-w1L = w1(LHS1-inicio:LHS2-inicio);
-w2L = w2(LHS1-inicio:LHS2-inicio);
-w3L = w3(LHS1-inicio:LHS2-inicio);
-w4L = w4(LHS1-inicio:LHS2-inicio);
-w5L = w5(LHS1-inicio:LHS2-inicio);
-w6L = w6(LHS1-inicio:LHS2-inicio);
+w1r = w1(1:RHS2-inicio,:);
+w1xgrafica=InterpolaA100Muestras(w1r(:,1));
+w1ygrafica=InterpolaA100Muestras(w1r(:,2));
+w1zgrafica=InterpolaA100Muestras(w1r(:,3));
 
-%interpolación
-[Alfa_Rhip]=InterpolaA100Muestras(alfa_Rhip);
+w2r = w2(LHS1-inicio:LHS2-inicio,:);
+w2xgrafica=InterpolaA100Muestras(w2r(:,1));
+w2ygrafica=InterpolaA100Muestras(w2r(:,2));
+w2zgrafica=InterpolaA100Muestras(w2r(:,3));
 
+w3r = w3(1:RHS2-inicio,:);
+w3xgrafica=InterpolaA100Muestras(w3r(:,1));
+w3ygrafica=InterpolaA100Muestras(w3r(:,2));
+w3zgrafica=InterpolaA100Muestras(w3r(:,3));
+
+w4r = w4(LHS1-inicio:LHS2-inicio,:);
+w4xgrafica=InterpolaA100Muestras(w4r(:,1));
+w4ygrafica=InterpolaA100Muestras(w4r(:,2));
+w4zgrafica=InterpolaA100Muestras(w4r(:,3));
+
+w5r = w5(1:RHS2-inicio,:);
+w5xgrafica=InterpolaA100Muestras(w5r(:,1));
+w5ygrafica=InterpolaA100Muestras(w5r(:,2));
+w5zgrafica=InterpolaA100Muestras(w5r(:,3));
+
+w6r = w6(LHS1-inicio:LHS2-inicio,:);
+w6xgrafica=InterpolaA100Muestras(w6r(:,1));
+w6ygrafica=InterpolaA100Muestras(w6r(:,2));
+w6zgrafica=InterpolaA100Muestras(w6r(:,3));
+
+%% GRAFICAMOS
+figure;
+% muslo
+subplot(3,3,1);plot(w1xgrafica,'r','LineWidth',2); hold on; plot(w2xgrafica,'g','LineWidth',2);
+title('v.ang. del muslo en x local');
+ylabel('Grad/seg');
+grid on;
+
+subplot(3,3,2);plot(w1ygrafica,'r','LineWidth',2); hold on; plot(w2ygrafica,'g','LineWidth',2);
+title('muslo en y local ROJA=DERECHO. VERDE=IZQUIERDO');
+grid on;
+
+subplot(3,3,3);plot(w1zgrafica,'r','LineWidth',2); hold on; plot(w2zgrafica,'g','LineWidth',2);
+title('v.ang. del muslo en z local');
+grid on;
+
+
+% pierna
+subplot(3,3,4);plot(w3xgrafica,'r','LineWidth',2); hold on; plot(w4xgrafica,'g','LineWidth',2);
+title('v.ang. de la pierna en x local');
+ylabel('Grad/seg');
+grid on;
+
+subplot(3,3,5);plot(w3ygrafica,'r','LineWidth',2); hold on; plot(w4ygrafica,'g','LineWidth',2);
+title('v.ang. de la píerna en y local');
+grid on;
+
+subplot(3,3,6);plot(w3zgrafica,'r','LineWidth',2); hold on; plot(w4zgrafica,'g','LineWidth',2);
+title('v.ang. de la píerna en z local');
+grid on;
+
+% pie
+subplot(3,3,7);plot(w5xgrafica,'r','LineWidth',2); hold on; plot(w6xgrafica,'g','LineWidth',2);
+title('v.ang. del pie en x local');
+ylabel('Grad/seg');
+grid on;
+
+subplot(3,3,8);plot(w5ygrafica,'r','LineWidth',2); hold on; plot(w6ygrafica,'g','LineWidth',2);
+title('v.ang. del pie en y local');
+grid on;
+
+subplot(3,3,9);plot(w5zgrafica,'r','LineWidth',2); hold on; plot(w6zgrafica,'g','LineWidth',2);
+title('v.ang. del pie en z local');
+grid on;
 
 
 
