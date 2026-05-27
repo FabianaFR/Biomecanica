@@ -1,17 +1,8 @@
 clear all;
-
-rutaBTK = 'C:\Users\usuario\Desktop\biomecanicaFabi\btk';
-% Agrego esa carpeta al Path de MATLAB temporalmente mientras corre el script 
-if exist(rutaBTK, 'dir')
-    addpath(rutaBTK);
-else
-    warning('No se encontró la carpeta de BTK en la ruta especificada.');
-end
-
-%%Lectura de los archivos
+close all;
 
 %CAMBIO: Cuidado cambié la ruta del archivo
-Archivo='C:\Users\usuario\Desktop\biomecanicaFabi\0029_Davis_Marcha01_Walking10b2021.c3d';
+Archivo='C:\Users\alumno\Desktop\BiomecanicaFabi\0029_Davis_Marcha01_Walking10b2021.c3d';
 h=btkReadAcquisition(Archivo); %asignación de puntero
 [marcadores,informacionCine]=btkGetMarkers(h);
 [Fuerzas,informacionFuerzas]=btkGetForcePlatforms(h);
@@ -692,6 +683,8 @@ grid on;
 
 
 %% ANGULOS DE EULER
+%angulos de rotacion del segmento para pasarlos de uns sistema coordenado a
+%otro. Son tres porque necesitas 3 rotaciones pq estamos en 3 dimensiones
 [alfasen1,alfacos1,betasen1,betacos1,gammasen1,gammacos1]=anguloeuler(i1,j1,k1);
 [alfasen2,alfacos2,betasen2,betacos2,gammasen2,gammacos2]=anguloeuler(i2,j2,k2);
 [alfasen3,alfacos3,betasen3,betacos3,gammasen3,gammacos3]=anguloeuler(i3,j3,k3);
@@ -781,6 +774,11 @@ w6ygrafica=InterpolaA100Muestras(w6r(:,2));
 w6zgrafica=InterpolaA100Muestras(w6r(:,3));
 
 %% GRAFICAMOS
+%velocidades angulares de los segmentos en ejes locales
+% las graficas estan espejadas respecto eje X y Y son mas compensatorios,
+% de estabilidad
+%En cambio las velocidades del eje z esta mas relacionado al avance en la
+%marcha
 figure;
 % muslo
 subplot(3,3,1);plot(w1xgrafica,'r','LineWidth',2); hold on; plot(w2xgrafica,'g','LineWidth',2);
@@ -824,6 +822,64 @@ grid on;
 subplot(3,3,9);plot(w5zgrafica,'r','LineWidth',2); hold on; plot(w6zgrafica,'g','LineWidth',2);
 title('v.ang. del pie en z local');
 grid on;
+
+
+%% ACELERACION DE LOS CENTROS DE MASA DE LOS SEGMENTOS
+aCM1=zeros(size(CMPmusR));
+aCM2=zeros(size(CMPmusR));
+
+aCM3=zeros(size(CMPmusR));
+aCM4=zeros(size(CMPmusR));
+
+aCM5=zeros(size(CMPmusR));
+aCM6=zeros(size(CMPmusR));
+
+for n=2: (length(CMPmusR)-1)
+    aCM1(n,:)= (CMPmusR(n+1,:)- 2*CMPmusR(n,:)+ CMPmusR(n-1,:))./(1/fm)^2;
+    aCM2(n,:)= (CMPmusL(n+1,:)- 2*CMPmusL(n,:)+ CMPmusL(n-1,:))./(1/fm)^2;
+    aCM3(n,:)= (CMPcalfR(n+1,:)- 2*CMPcalfR(n,:)+ CMPcalfR(n-1,:))./(1/fm)^2;
+    aCM4(n,:)= (CMPcalfL(n+1,:)- 2*CMPcalfL(n,:)+ CMPcalfL(n-1,:))./(1/fm)^2;
+    aCM5(n,:)= (CMPfootR(n+1,:)- 2*CMPfootR(n,:)+ CMPfootR(n-1,:))./(1/fm)^2;
+    aCM6(n,:)= (CMPfootL(n+1,:)- 2*CMPfootL(n,:)+ CMPfootL(n-1,:))./(1/fm)^2;
+end;
+
+aCM1(1,:) = aCM1(2,:);
+aCM2(1,:) = aCM2(2,:);
+aCM3(1,:) = aCM3(2,:);
+aCM4(1,:) = aCM4(2,:);
+aCM5(1,:) = aCM5(2,:);
+aCM6(1,:) = aCM6(2,:);
+
+%% CALCULO DE MOMENTOS DE INERCIA DE CADA SEGMENTO
+
+
+%% CALCULO DE CANTIDAD DE MOVIMIENTO
+% paso velocidades angulares a grados
+w1x=(w1x.*pi)./180;
+w1y=(w1y.*pi)./180;
+w1z=(w1z.*pi)./180;
+
+w2x=(w2x.*pi)./180;
+w2y=(w2y.*pi)./180;
+w2z=(w2z.*pi)./180;
+
+w3x=(w3x.*pi)./180;
+w3y=(w3y.*pi)./180;
+w3z=(w3z.*pi)./180;
+
+w4x=(w4x.*pi)./180;
+w4y=(w4y.*pi)./180;
+w4z=(w4z.*pi)./180;
+
+w5x=(w5x.*pi)./180;
+w5y=(w5y.*pi)./180;
+w5z=(w5z.*pi)./180;
+
+w6x=(w6x.*pi)./180;
+w6y=(w6y.*pi)./180;
+w6z=(w6z.*pi)./180;
+
+%% FUERZAS
 
 
 
